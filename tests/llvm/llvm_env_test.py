@@ -3,6 +3,7 @@
 # This source code is licensed under the MIT license found in the
 # LICENSE file in the root directory of this source tree.
 """Integrations tests for the LLVM CompilerGym environments."""
+from enum import Enum
 from typing import List
 
 import gym
@@ -212,6 +213,11 @@ def test_set_reward_space_from_spec(env: LlvmEnv):
 
     env.reward_space = "IrInstructionCount"
     assert env.reward_space == reward
+
+
+def test_generate_enum_declarations(env: LlvmEnv):
+    assert isinstance(llvm.observation_spaces, Enum)
+    assert isinstance(llvm.reward_spaces, Enum)
 
 
 if __name__ == "__main__":

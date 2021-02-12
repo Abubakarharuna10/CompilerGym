@@ -5,7 +5,10 @@
 
 py_library(
     name = "llvm",
-    srcs = ["__init__.py"],
+    srcs = [
+        "__init__.py",
+        ":specs.py",
+    ],
     data = [
         "//compiler_gym/envs/llvm/service:compiler_gym-llvm-service",
     ],
@@ -56,5 +59,24 @@ py_library(
         "//compiler_gym/spaces",
         "//compiler_gym/third_party/autophase",
         "//compiler_gym/third_party/inst2vec",
+    ],
+)
+
+genrule(
+    name = "specs",
+    outs = ["specs.py"],
+    cmd = "$(location :make_specs) $@",
+    tools = [":make_specs"],
+)
+
+py_binary(
+    name = "make_specs",
+    srcs = ["make_specs.py"],
+    data = [
+        "//compiler_gym/envs/llvm/service:compiler_gym-llvm-service",
+    ],
+    deps = [
+        ":llvm_env",
+        "//compiler_gym/util",
     ],
 )
